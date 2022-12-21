@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /BlazorExpenseTracker/appsettings.Development.json
+/BlazorExpenseTracker/Properties/ServiceDependencies/exptracker-app - Web Deploy/profile.arm.json
