@@ -1,6 +1,7 @@
 ﻿@page "/listExpenses"
-@using BlazorExpenseTracker.Data
-@inject WeatherForecastService ForecastService
+@using BlazorExpenseTracker.Domain.Model;
+@using BlazorExpenseTracker.Domain.Services
+@inject ExpensesDataService _expensesDataService
 
 <PageTitle>Expenses List</PageTitle>
 
@@ -8,7 +9,7 @@
 
 
 
-@if (forecasts == null)
+@if (expenses == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,19 +19,21 @@ else
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Value</th>
+                <th>Category</th>
+                <th>Payment Type</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var expense in expenses)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@expense.Date.ToShortDateString()</td>
+                    <td>@expense.Value</td>
+                    <td>@expense.Category</td>
+                    <td>@expense.PaymentType</td>
+                    <td>@expense.Description</td>
                 </tr>
             }
         </tbody>
@@ -38,10 +41,10 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private Expense[]? expenses;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        expenses = await _expensesDataService.GetExpenses(DateOnly.FromDateTime(DateTime.Now));
     }
 }

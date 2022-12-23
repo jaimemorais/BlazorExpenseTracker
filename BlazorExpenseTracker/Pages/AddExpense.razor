@@ -1,6 +1,7 @@
 ﻿@page "/addExpense"
-@using BlazorExpenseTracker.Data
-@inject WeatherForecastService ForecastService
+@using BlazorExpenseTracker.Domain.Model
+@using BlazorExpenseTracker.Domain.Services
+@inject ExpensesDataService _expensesDataService
 
 <PageTitle>Add Expense</PageTitle>
 
@@ -11,10 +12,10 @@
 
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private Expense[]? expenses;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        expenses = await _expensesDataService.GetExpenses(DateOnly.FromDateTime(DateTime.Now));
     }
 }
