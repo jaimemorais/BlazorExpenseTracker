@@ -1,21 +1,98 @@
 ﻿@page "/addExpense"
 @using BlazorExpenseTracker.Domain.Model
 @using BlazorExpenseTracker.Domain.Services
-@inject ExpensesDataService _expensesDataService
+@inject NavigationManager NavigationManager
+@inject ICategoryDataService _categoryDataService;
+@inject IPaymentTypeDataService _paymentTypeDataService;
+@inject IExpenseDataService _expenseDataService;
 
 <PageTitle>Add Expense</PageTitle>
 
 <h1>Add Expense</h1>
+<hr/>
+
+<EditForm Model="@newExpense" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    
+     <p>
+        <label>
+            Date:<br />
+            <InputDate @bind-Value="newExpense.Date" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Value:<br/>
+            <InputNumber @bind-Value="newExpense.Value" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Category:<br/>
+            <InputSelect @bind-Value="newExpense.Category">
+                <option value="">Select category ...</option>
+                @if (categoryList != null) {
+                    foreach(var category in categoryList)
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }   
+                }             
+            </InputSelect>
+        </label>
+    </p>
+    <p>
+        <label>
+            Payment Type:<br/>
+            <InputSelect @bind-Value="newExpense.PaymentType">
+                <option value="">Select payment type ...</option>
+                @if (paymentTypeList != null)
+                {
+                    foreach (var paymentType in paymentTypeList)
+                    {
+                        <option value="@paymentType.Name">@paymentType.Name</option>
+                    }
+                }
+            </InputSelect>
+        </label>
+    </p>
+
+    <p>
+        <label>
+            Description:<br />
+            <InputTextArea @bind-Value="newExpense.Description" />
+        </label>
+    </p>
 
 
-<h2>TODO</h2>
+    <br/>
+    <ValidationSummary/>
+
+    <button type="submit">Save</button>
+
+</EditForm>
+
 
 
 @code {
-    private Expense[]? expenses;
+    private Expense newExpense = new Expense()
+    {
+        Date = DateTime.Now
+    };
+
+    private IList<Category>? categoryList;
+    private IList<PaymentType>? paymentTypeList;
 
     protected override async Task OnInitializedAsync()
     {
-        expenses = await _expensesDataService.GetExpenses(DateOnly.FromDateTime(DateTime.Now));
+        categoryList = await _categoryDataService.GetCategoriesAsync();
+        paymentTypeList = await _paymentTypeDataService.GetPaymentTypesAsync();
     }
+
+    private async Task HandleValidSubmit()
+    {
+        var expense = await _expenseDataService.AddExpenseAsync(newExpense);
+
+        NavigationManager.NavigateTo("/listExpenses");
+    }
+
 }

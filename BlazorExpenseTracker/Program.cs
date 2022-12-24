@@ -1,11 +1,13 @@
 using BlazorExpenseTracker.Domain.Services;
-
+using BlazorExpenseTracker.Domain.Services.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<ExpensesDataService>();
+builder.Services.AddSingleton<IExpenseDataService, ExpenseDataServiceInMemory>();
+builder.Services.AddSingleton<ICategoryDataService, CategoryDataServiceInMemory>();
+builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeDataServiceInMemory>();
 
 var app = builder.Build();
 
