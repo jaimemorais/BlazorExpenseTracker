@@ -1,6 +1,6 @@
-using BlazorExpenseTracker.Domain.Model;
+using BlazorExpenseTracker.Model;
 
-namespace BlazorExpenseTracker.Domain.Services.InMemory
+namespace BlazorExpenseTracker.Services.Data.InMemory
 {
     public class CategoryDataServiceInMemory : ICategoryDataService
     {

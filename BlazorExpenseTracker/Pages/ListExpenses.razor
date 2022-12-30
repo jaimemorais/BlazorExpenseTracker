@@ -1,6 +1,8 @@
 ﻿@page "/listExpenses"
-@using BlazorExpenseTracker.Domain.Model;
-@using BlazorExpenseTracker.Domain.Services
+@attribute [Authorize]
+
+@using BlazorExpenseTracker.Model;
+@using BlazorExpenseTracker.Services.Data;
 @inject IExpenseDataService _expensesDataService
 
 <PageTitle>Expenses List</PageTitle>

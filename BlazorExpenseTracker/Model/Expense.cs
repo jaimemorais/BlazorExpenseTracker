@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorExpenseTracker.Domain.Model
+namespace BlazorExpenseTracker.Model
 {
     public class Expense
     {

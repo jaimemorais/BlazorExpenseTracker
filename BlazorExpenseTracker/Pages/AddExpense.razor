@@ -1,7 +1,9 @@
 ﻿@page "/addExpense"
-@using BlazorExpenseTracker.Domain.Model
-@using BlazorExpenseTracker.Domain.Services
-@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+@using BlazorExpenseTracker.Model
+@using BlazorExpenseTracker.Services.Data;
+@inject NavigationManager _navigationManager
 @inject ICategoryDataService _categoryDataService;
 @inject IPaymentTypeDataService _paymentTypeDataService;
 @inject IExpenseDataService _expenseDataService;
@@ -92,7 +94,7 @@
     {
         var expense = await _expenseDataService.AddExpenseAsync(newExpense);
 
-        NavigationManager.NavigateTo("/listExpenses");
+        _navigationManager.NavigateTo("/listExpenses");
     }
 
 }

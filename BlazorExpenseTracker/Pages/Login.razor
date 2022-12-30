@@ -1,0 +1,61 @@
+﻿@page "/login"
+@using BlazorExpenseTracker.Services.Auth;
+@using BlazorExpenseTracker.Model
+@using BlazorExpenseTracker.Services
+@using System.Security.Claims;
+@inject IJSRuntime js
+@inject NavigationManager _navigationManager
+@inject IAuthorizationService _authorizationService
+@inject IExpTrackerAuthService _expTrackerAuthService
+@inject ProtectedSessionStorage _protectedSessionStorage
+@inject AuthenticationStateProvider _authenticationStateProvider
+
+<PageTitle>Login</PageTitle>
+
+<h1>Login</h1>
+<hr/>
+
+<div>
+   
+     <p>
+        <label>
+            Username:<br />
+            <input @bind="username" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Password:<br/>
+            <input @bind="password" />
+        </label>
+    </p>
+
+    <button @onclick="Authenticate" >Login</button>
+
+</div>
+
+
+
+@code {
+    string username = "";
+    string password = "";
+
+    private async Task Authenticate()
+    {
+        var expTrackerUser = _expTrackerAuthService.Login(username, password);
+
+        if (expTrackerUser != null)
+        {
+            var expTrackerAuthStateProvider = (ExpTrackerAuthenticationStateProvider)_authenticationStateProvider;
+            await expTrackerAuthStateProvider.UpdateAuthenticationState(new ExpTrackerUserSession(expTrackerUser.Username, expTrackerUser.Role));
+            
+            _navigationManager.NavigateTo("/", true);            
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Invalid user name or password.");
+            return;
+        }
+    }
+
+}

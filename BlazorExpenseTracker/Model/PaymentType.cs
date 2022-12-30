@@ -1,4 +1,4 @@
-﻿namespace BlazorExpenseTracker.Domain.Model
+﻿namespace BlazorExpenseTracker.Model
 {
     public class PaymentType
     {

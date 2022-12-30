@@ -1,6 +1,6 @@
-﻿using BlazorExpenseTracker.Domain.Model;
+﻿using BlazorExpenseTracker.Model;
 
-namespace BlazorExpenseTracker.Domain.Services
+namespace BlazorExpenseTracker.Services.Data
 {
     public interface IPaymentTypeDataService
     {
