@@ -26,11 +26,11 @@
     <p>
         <label>
             Password:<br/>
-            <input @bind="password" />
+            <input @bind="password" type="password" @onkeydown="@Enter" />
         </label>
     </p>
 
-    <button @onclick="Authenticate" >Login</button>
+    <button @onclick="ExecuteLogin">Login</button>
 
 </div>
 
@@ -40,21 +40,27 @@
     string username = "";
     string password = "";
 
-    private async Task Authenticate()
+    public async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await ExecuteLogin();
+        }
+    }
+
+    private async Task ExecuteLogin()
     {
         var expTrackerUser = await _expTrackerAuthService.LoginAsync(username, password);
 
         if (expTrackerUser != null)
         {
             var expTrackerAuthStateProvider = (ExpTrackerAuthenticationStateProvider)_authenticationStateProvider;
-            await expTrackerAuthStateProvider.UpdateAuthenticationState(new ExpTrackerUserSession(expTrackerUser.Username, expTrackerUser.GivenName, expTrackerUser.Role));
-            
+            await expTrackerAuthStateProvider.UpdateAuthenticationState(new ExpTrackerUserSession(expTrackerUser.Username, expTrackerUser.GivenName, expTrackerUser.Role));            
             _navigationManager.NavigateTo("/", true);            
         }
         else
         {
             await js.InvokeVoidAsync("alert", "Invalid user name or password.");
-            return;
         }
     }
 
