@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpenseTracker.Model
 {
-    public class PaymentType
+    public class PaymentType : BaseModel
     {
         public string? Name { get; set; }
     }

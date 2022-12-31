@@ -42,7 +42,7 @@
 
     private async Task Authenticate()
     {
-        var expTrackerUser = _expTrackerAuthService.Login(username, password);
+        var expTrackerUser = await _expTrackerAuthService.LoginAsync(username, password);
 
         if (expTrackerUser != null)
         {

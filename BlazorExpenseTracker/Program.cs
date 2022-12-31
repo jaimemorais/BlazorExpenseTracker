@@ -1,6 +1,7 @@
 using BlazorExpenseTracker.Services.Auth;
 using BlazorExpenseTracker.Services.Data;
-using BlazorExpenseTracker.Services.Data.InMemory;
+using BlazorExpenseTracker.Services.Data.MongoDb;
+using BlazorExpenseTracker.Services.Data.MongoDb.Settings;
 using Microsoft.AspNetCore.Components.Authorization;
 
 
@@ -25,11 +26,18 @@ static WebApplication BuildApp(string[] args)
     builder.Services.AddScoped<AuthenticationStateProvider, ExpTrackerAuthenticationStateProvider>();
     builder.Services.AddSingleton<IExpTrackerAuthService, ExpTrackerAuthService>();
 
-    // Data services
-    builder.Services.AddSingleton<IUserDataService, UserDataServiceInMemory>();
-    builder.Services.AddSingleton<IExpenseDataService, ExpenseDataServiceInMemory>();
-    builder.Services.AddSingleton<ICategoryDataService, CategoryDataServiceInMemory>();
-    builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeDataServiceInMemory>();
+    // Data services - MongoDB
+    builder.Services.Configure<ExpTrackerMongoDbSettings>(builder.Configuration.GetSection("ExpTrackerMongoDb"));
+    builder.Services.AddSingleton<IUserDataService, UserMongoDbDataService>();
+    builder.Services.AddSingleton<IExpenseDataService, ExpenseMongoDbDataService>();
+    builder.Services.AddSingleton<ICategoryDataService, CategoryMongoDbDataService>();
+    builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeMongoDbDataService>();
+
+    // Data services - In Memory
+    ////builder.Services.AddSingleton<IUserDataService, UserInMemoryDataService>();
+    ////builder.Services.AddSingleton<IExpenseDataService, ExpenseInMemoryDataService>();
+    ////builder.Services.AddSingleton<ICategoryDataService, CategoryInMemoryDataService>();
+    ////builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeInMemoryDataService>();
 
     return builder.Build();
 }

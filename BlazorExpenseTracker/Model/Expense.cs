@@ -2,7 +2,7 @@
 
 namespace BlazorExpenseTracker.Model
 {
-    public class Expense
+    public class Expense : BaseModel
     {
         public string? UserName { get; set; }
 

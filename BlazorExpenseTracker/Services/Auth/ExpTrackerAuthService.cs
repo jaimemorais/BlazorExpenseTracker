@@ -3,8 +3,7 @@
 namespace BlazorExpenseTracker.Services.Auth
 {
 
-    // Temporarily using simple user backend
-    // TODO use auth0
+
     public class ExpTrackerAuthService : IExpTrackerAuthService
     {
         private readonly IUserDataService _userDataService;
@@ -14,9 +13,11 @@ namespace BlazorExpenseTracker.Services.Auth
             _userDataService = userDataService;
         }
 
-        public ExpTrackerUser? Login(string username, string password)
+        public async Task<ExpTrackerUser?> LoginAsync(string username, string password)
         {
-            return _userDataService.GetUser(username, password);
+            // Temporarily using simple user backend
+            // TODO use auth0
+            return await _userDataService.GetUser(username, password);
         }
 
 

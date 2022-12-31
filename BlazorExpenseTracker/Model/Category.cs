@@ -1,6 +1,6 @@
 ﻿namespace BlazorExpenseTracker.Model
 {
-    public class Category
+    public class Category : BaseModel
     {
         public string? Name { get; set; }
     }

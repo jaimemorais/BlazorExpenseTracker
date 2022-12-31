@@ -4,6 +4,6 @@ namespace BlazorExpenseTracker.Services.Data
 {
     public interface IUserDataService
     {
-        ExpTrackerUser? GetUser(string username, string password);
+        Task<ExpTrackerUser?> GetUser(string username, string password);
     }
 }

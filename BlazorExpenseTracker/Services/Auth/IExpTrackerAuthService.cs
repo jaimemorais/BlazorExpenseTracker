@@ -2,7 +2,7 @@
 {
     public interface IExpTrackerAuthService
     {
-        ExpTrackerUser? Login(string username, string password);
+        Task<ExpTrackerUser?> LoginAsync(string username, string password);
 
 
     }
