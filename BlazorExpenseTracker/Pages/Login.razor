@@ -26,7 +26,7 @@
     <p>
         <label>
             Password:<br/>
-            <input @bind="password" type="password" @onkeydown="@Enter" />
+            <input @bind="password" type="password" @onkeydown="@CheckEnterPressed" />
         </label>
     </p>
 
@@ -34,13 +34,11 @@
 
 </div>
 
-
-
 @code {
     string username = "";
     string password = "";
 
-    public async Task Enter(KeyboardEventArgs e)
+    public async Task CheckEnterPressed(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {

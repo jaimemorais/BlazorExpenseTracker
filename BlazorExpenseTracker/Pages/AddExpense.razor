@@ -14,6 +14,8 @@
 <h1>Add Expense</h1>
 <hr/>
 
+<div hidden="@gifHidden" style="position:fixed;width:100%;height:100%;z-index:1;"><img src="hi5dog.gif" /></div>
+
 <EditForm Model="@newExpense" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     
@@ -72,6 +74,7 @@
 
     <button type="submit">Save</button>
 
+
 </EditForm>
 
 
@@ -92,13 +95,22 @@
     }
 
     private async Task HandleValidSubmit()
-    {
+    {        
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();        
         newExpense.UserName = authState.User?.Identity?.Name;
 
         await _expenseDataService.AddExpenseAsync(newExpense);
 
+        ShowGif();
+        await Task.Delay(3000);
+
         _navigationManager.NavigateTo("/listExpenses");
+    }
+
+    bool gifHidden = true;
+    private void ShowGif()
+    {
+        gifHidden = false; 
     }
 
 }
