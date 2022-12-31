@@ -3,9 +3,9 @@ using BlazorExpenseTracker.Services.Data;
 using BlazorExpenseTracker.Services.Data.InMemory;
 using Microsoft.AspNetCore.Components.Authorization;
 
-var builder = WebApplication.CreateBuilder(args);
-ConfigureDependencies(builder);
-var app = builder.Build();
+
+
+var app = BuildApp(args);
 ConfigureApp(app);
 app.Run();
 
@@ -13,11 +13,12 @@ app.Run();
 
 
 
-static void ConfigureDependencies(WebApplicationBuilder builder)
+static WebApplication BuildApp(string[] args)
 {
+    var builder = WebApplication.CreateBuilder(args);
+
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
-
 
     // Auth services
     builder.Services.AddAuthenticationCore();
@@ -29,8 +30,9 @@ static void ConfigureDependencies(WebApplicationBuilder builder)
     builder.Services.AddSingleton<IExpenseDataService, ExpenseDataServiceInMemory>();
     builder.Services.AddSingleton<ICategoryDataService, CategoryDataServiceInMemory>();
     builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeDataServiceInMemory>();
-}
 
+    return builder.Build();
+}
 
 
 static void ConfigureApp(WebApplication app)

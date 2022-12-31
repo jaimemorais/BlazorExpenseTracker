@@ -28,13 +28,11 @@
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="listExpenses">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> List Expenses
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> View Expenses
                     </NavLink>
                 </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="listExpenses">
-                        <a class="oi oi-door-exit" @onclick="Logout" href="javascript:void(0)">Logout</a>
-                    </NavLink>
+                <div class="nav-item px-3">        
+                        <a style="text-decoration:none"  @onclick="Logout" href="javascript:void(0)">Logout</a>
                 </div>
             </Authorized>
         </AuthorizeView>
