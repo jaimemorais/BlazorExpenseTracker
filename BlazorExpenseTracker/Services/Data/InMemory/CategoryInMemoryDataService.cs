@@ -5,7 +5,7 @@ namespace BlazorExpenseTracker.Services.Data.InMemory
     public class CategoryInMemoryDataService : ICategoryDataService
     {
 
-        public async Task<IList<Category>> GetCategoriesAsync()
+        public async Task<List<Category>> GetCategoriesAsync()
         {
             return await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Category
             {

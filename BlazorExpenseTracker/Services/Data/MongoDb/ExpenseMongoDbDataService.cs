@@ -1,6 +1,7 @@
 ﻿using BlazorExpenseTracker.Model;
 using BlazorExpenseTracker.Services.Data.MongoDb.Settings;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace BlazorExpenseTracker.Services.Data.MongoDb
 {
@@ -11,14 +12,14 @@ namespace BlazorExpenseTracker.Services.Data.MongoDb
         {
         }
 
-        public Task<Expense> AddExpenseAsync(Expense expense)
+        public async Task AddExpenseAsync(Expense expense)
         {
-            throw new NotImplementedException();
+            await _collection.InsertOneAsync(expense);
         }
 
-        public Task<IList<Expense>> GetExpensesAsync(DateOnly startDate)
+        public async Task<List<Expense>> GetExpensesAsync(string? userName, DateOnly startDate)
         {
-            throw new NotImplementedException();
+            return await _collection.Find<Expense>(e => e.UserName == userName).ToListAsync();
         }
     }
 }

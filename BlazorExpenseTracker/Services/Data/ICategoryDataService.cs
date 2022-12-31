@@ -4,7 +4,7 @@ namespace BlazorExpenseTracker.Services.Data
 {
     public interface ICategoryDataService
     {
-        Task<IList<Category>> GetCategoriesAsync();
+        Task<List<Category>> GetCategoriesAsync();
 
     }
 }

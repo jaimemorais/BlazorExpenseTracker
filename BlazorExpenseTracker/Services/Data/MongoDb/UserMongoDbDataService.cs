@@ -16,7 +16,7 @@ namespace BlazorExpenseTracker.Services.Data.MongoDb
 
         public async Task<ExpTrackerUser?> GetUser(string username, string password)
         {
-            var user = (await _mongoCollection.FindAsync(u => u.Username == username && u.Password == password)).FirstOrDefault();
+            var user = (await _collection.FindAsync(u => u.Username == username && u.Password == password)).FirstOrDefault();
 
             return user == null ? null : new ExpTrackerUser(user.Username, user.GivenName, user.Role);
         }

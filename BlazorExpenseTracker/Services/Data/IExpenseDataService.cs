@@ -4,8 +4,8 @@ namespace BlazorExpenseTracker.Services.Data
 {
     public interface IExpenseDataService
     {
-        Task<IList<Expense>> GetExpensesAsync(DateOnly startDate);
+        Task<List<Expense>> GetExpensesAsync(string? userName, DateOnly startDate);
 
-        Task<Expense> AddExpenseAsync(Expense expense);
+        Task AddExpenseAsync(Expense expense);
     }
 }

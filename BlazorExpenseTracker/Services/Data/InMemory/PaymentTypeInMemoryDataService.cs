@@ -5,7 +5,7 @@ namespace BlazorExpenseTracker.Services.Data.InMemory
     public class PaymentTypeInMemoryDataService : IPaymentTypeDataService
     {
 
-        public async Task<IList<PaymentType>> GetPaymentTypesAsync()
+        public async Task<List<PaymentType>> GetPaymentTypesAsync()
         {
             return await Task.FromResult(Enumerable.Range(1, 5).Select(index => new PaymentType
             {

@@ -20,7 +20,7 @@ namespace BlazorExpenseTracker.Services.Data.MongoDb
             _collectionName = collectionName;
         }
 
-        protected IMongoCollection<T> _mongoCollection => _mongoDatabase.GetCollection<T>(_collectionName);
+        protected IMongoCollection<T> _collection => _mongoDatabase.GetCollection<T>(_collectionName);
 
     }
 }

@@ -6,7 +6,7 @@ namespace BlazorExpenseTracker.Services.Data.InMemory
     {
         private readonly List<Expense> expenseListInMemory = new List<Expense>();
 
-        public async Task<IList<Expense>> GetExpensesAsync(DateOnly startDate)
+        public async Task<List<Expense>> GetExpensesAsync(string? userName, DateOnly startDate)
         {
             ////var someRandomExpenses = await Task.FromResult(Enumerable.Range(1, 3).Select(index => new Expense
             ////{
@@ -18,14 +18,14 @@ namespace BlazorExpenseTracker.Services.Data.InMemory
             ////}));
             ////expenseListInMemory.AddRange(someRandomExpenses);
 
-            return await Task.FromResult(expenseListInMemory.OrderByDescending(e => e.Date).ToList());
+            return await Task.FromResult(expenseListInMemory.Where(e => e.UserName == userName).OrderByDescending(e => e.Date).ToList());
         }
 
 
-        public async Task<Expense> AddExpenseAsync(Expense expense)
+        public async Task AddExpenseAsync(Expense expense)
         {
             expenseListInMemory.Add(expense);
-            return await Task.FromResult(expense);
+            await Task.CompletedTask;
         }
 
     }

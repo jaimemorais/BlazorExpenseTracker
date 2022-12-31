@@ -1,6 +1,7 @@
 ﻿using BlazorExpenseTracker.Model;
 using BlazorExpenseTracker.Services.Data.MongoDb.Settings;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace BlazorExpenseTracker.Services.Data.MongoDb
 {
@@ -12,9 +13,9 @@ namespace BlazorExpenseTracker.Services.Data.MongoDb
         }
 
 
-        public Task<IList<PaymentType>> GetPaymentTypesAsync()
+        public async Task<List<PaymentType>> GetPaymentTypesAsync()
         {
-            throw new NotImplementedException();
+            return await _collection.Aggregate<PaymentType>().ToListAsync();
         }
     }
 }

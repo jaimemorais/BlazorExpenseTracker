@@ -4,7 +4,7 @@ namespace BlazorExpenseTracker.Services.Data
 {
     public interface IPaymentTypeDataService
     {
-        Task<IList<PaymentType>> GetPaymentTypesAsync();
+        Task<List<PaymentType>> GetPaymentTypesAsync();
 
     }
 }
