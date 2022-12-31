@@ -47,7 +47,7 @@
         if (expTrackerUser != null)
         {
             var expTrackerAuthStateProvider = (ExpTrackerAuthenticationStateProvider)_authenticationStateProvider;
-            await expTrackerAuthStateProvider.UpdateAuthenticationState(new ExpTrackerUserSession(expTrackerUser.Username, expTrackerUser.Role));
+            await expTrackerAuthStateProvider.UpdateAuthenticationState(new ExpTrackerUserSession(expTrackerUser.Username, expTrackerUser.GivenName, expTrackerUser.Role));
             
             _navigationManager.NavigateTo("/", true);            
         }

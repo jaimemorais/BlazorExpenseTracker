@@ -31,7 +31,8 @@ namespace BlazorExpenseTracker.Services.Auth
 
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, expTrackerUserSession.Username),
+                    new Claim(ClaimTypes.Name, expTrackerUserSession.UserName),
+                    new Claim(ClaimTypes.GivenName, expTrackerUserSession.GivenName),
                     new Claim(ClaimTypes.Role, expTrackerUserSession.Role)
                 }, "CustomAuth"));
 
@@ -52,7 +53,8 @@ namespace BlazorExpenseTracker.Services.Auth
                 await _protectedSessionStorage.SetAsync(USER_SESSION_KEY, expTrackerUserSession);
                 claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, expTrackerUserSession.Username),
+                    new Claim(ClaimTypes.Name, expTrackerUserSession.UserName),
+                    new Claim(ClaimTypes.GivenName, expTrackerUserSession.GivenName),
                     new Claim(ClaimTypes.Role, expTrackerUserSession.Role)
                 }));
             }

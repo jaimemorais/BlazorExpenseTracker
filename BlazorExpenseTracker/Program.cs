@@ -25,6 +25,7 @@ static void ConfigureDependencies(WebApplicationBuilder builder)
     builder.Services.AddSingleton<IExpTrackerAuthService, ExpTrackerAuthService>();
 
     // Data services
+    builder.Services.AddSingleton<IUserDataService, UserDataServiceInMemory>();
     builder.Services.AddSingleton<IExpenseDataService, ExpenseDataServiceInMemory>();
     builder.Services.AddSingleton<ICategoryDataService, CategoryDataServiceInMemory>();
     builder.Services.AddSingleton<IPaymentTypeDataService, PaymentTypeDataServiceInMemory>();

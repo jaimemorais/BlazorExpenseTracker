@@ -1,17 +1,19 @@
-﻿namespace BlazorExpenseTracker.Services.Auth
+﻿using BlazorExpenseTracker.Services.Data;
+
+namespace BlazorExpenseTracker.Services.Auth
 {
     public class ExpTrackerAuthService : IExpTrackerAuthService
     {
+        private readonly IUserDataService _userDataService;
+
+        public ExpTrackerAuthService(IUserDataService userDataService)
+        {
+            _userDataService = userDataService;
+        }
 
         public ExpTrackerUser? Login(string username, string password)
         {
-            // TODO
-            if (username == "teste")
-            {
-                return new ExpTrackerUser("teste", "teste", "RoleTeste");
-            }
-
-            return null;
+            return _userDataService.GetUser(username, password);
         }
 
 
