@@ -21,6 +21,8 @@ static WebApplication BuildApp(string[] args)
     builder.Services.AddRazorPages();
     builder.Services.AddServerSideBlazor();
 
+    builder.Services.AddMemoryCache();
+
     // Auth services
     builder.Services.AddAuthenticationCore();
     builder.Services.AddScoped<AuthenticationStateProvider, ExpTrackerAuthenticationStateProvider>();
