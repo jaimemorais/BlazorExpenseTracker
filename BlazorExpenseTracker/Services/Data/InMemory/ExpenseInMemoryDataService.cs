@@ -2,7 +2,7 @@ using BlazorExpenseTracker.Model;
 
 namespace BlazorExpenseTracker.Services.Data.InMemory
 {
-    public class ExpenseDataServiceInMemory : IExpenseDataService
+    public class ExpenseInMemoryDataService : IExpenseDataService
     {
         private readonly List<Expense> expenseListInMemory = new List<Expense>();
 

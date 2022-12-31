@@ -2,7 +2,7 @@ using BlazorExpenseTracker.Model;
 
 namespace BlazorExpenseTracker.Services.Data.InMemory
 {
-    public class CategoryDataServiceInMemory : ICategoryDataService
+    public class CategoryInMemoryDataService : ICategoryDataService
     {
 
         public async Task<IList<Category>> GetCategoriesAsync()

@@ -2,7 +2,7 @@ using BlazorExpenseTracker.Model;
 
 namespace BlazorExpenseTracker.Services.Data.InMemory
 {
-    public class PaymentTypeDataServiceInMemory : IPaymentTypeDataService
+    public class PaymentTypeInMemoryDataService : IPaymentTypeDataService
     {
 
         public async Task<IList<PaymentType>> GetPaymentTypesAsync()
