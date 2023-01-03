@@ -1,15 +1,19 @@
 ﻿@page "/listExpenses"
+@page "/listExpenses/{expenseSavedFlag}"
 @attribute [Authorize]
 
 @using BlazorExpenseTracker.Model;
 @using BlazorExpenseTracker.Services.Data;
 @inject IExpenseDataService _expensesDataService
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
 
 <PageTitle>BlazorExpenseTracker - My Expenses</PageTitle>
 
-<h1>My Expenses</h1>
+<h1 hidden="@(!puppyGifHidden)">My Expenses</h1>
 
+
+<div hidden="@puppyGifHidden" style="position:fixed;width:100%;height:100%;z-index:1;"><img src="hi5dog.gif" /></div>
 
 
 @if (expenses == null)
@@ -26,6 +30,8 @@ else
                 <th>Category</th>
                 <th>Payment Type</th>
                 <th>Description</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -37,19 +43,49 @@ else
                     <td>@expense.Category</td>
                     <td>@expense.PaymentType</td>
                     <td>@expense.Description</td>
+                    <td><a class="oi oi-pencil" href="/editExpense/@expense.Id"></a></td>                        
+                    <td><a class="oi oi-trash" @onclick="@(async () => await DeleteItem(expense.Id))" /></td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-@code {
+@code 
+{
+    [Parameter]
+    public string ExpenseSavedFlag { get; set; } = string.Empty;
+    bool puppyGifHidden = true;
+
     private IList<Expense>? expenses;
+
 
     protected override async Task OnInitializedAsync()
     {
+        if (ExpenseSavedFlag == "expenseSavedFlagValue")
+        {
+            puppyGifHidden = false;
+            await Task.Delay(2000);     
+        }
+
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        
-        expenses = await _expensesDataService.GetExpensesAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));        
+        expenses = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));        
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        puppyGifHidden = true;
+    }
+
+    private async Task DeleteItem(string? expenseId) 
+    {
+        await _expensesDataService.DeleteExpenseAsync(expenseId);
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        expenses = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));        
+    }
+
+
+
 }
