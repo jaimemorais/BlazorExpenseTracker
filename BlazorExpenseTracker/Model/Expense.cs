@@ -7,9 +7,11 @@ namespace BlazorExpenseTracker.Model
         public string? UserName { get; set; }
 
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:#,####}")]
         public decimal? Value { get; set; }
 
         [Required]

@@ -1,0 +1,50 @@
+﻿@page "/listExpensesReport"
+
+@attribute [Authorize]
+
+@using BlazorExpenseTracker.Model;
+@using BlazorExpenseTracker.Services.Data;
+@inject IExpenseDataService _expensesDataService
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
+
+<PageTitle>Expense Tracker - My Expenses</PageTitle>
+
+@if (expenses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+        <table class="table">            
+            @foreach (var expense in expenses)
+            {
+                        <tr>
+                            <td>@(char.ToUpper(System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(expense.Date.Month)[0]) + 
+                                 System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(expense.Date.Month)[1..])</td>
+                            <td>@expense.Date.Day</td>
+                            <td>@expense.Value</td>
+                            <td>@userGivenName</td>
+                            <td>@expense.Category</td>
+                            <td>@expense.Description</td>
+                            <td>@expense.PaymentType</td>                            
+                        </tr>
+            }            
+        </table>
+}
+
+@code 
+{
+    private IList<Expense>? expenses;
+    private string userGivenName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        userGivenName = authState.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")?.Value;
+
+        expenses = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));
+        expenses = expenses.OrderBy(e => e.Date).ToList();
+    }
+
+}

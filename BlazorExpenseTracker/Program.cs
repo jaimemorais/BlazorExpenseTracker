@@ -22,6 +22,8 @@ static WebApplication BuildApp(string[] args)
     builder.Services.AddServerSideBlazor();
 
     builder.Services.AddMemoryCache();
+    builder.Services.AddLocalization();
+
 
     // Auth services
     builder.Services.AddAuthenticationCore();
@@ -58,6 +60,11 @@ static void ConfigureApp(WebApplication app)
     app.UseStaticFiles();
 
     app.UseRouting();
+
+    app.UseRequestLocalization(new RequestLocalizationOptions()
+        .SetDefaultCulture("pt-BR")
+        .AddSupportedCultures(new[] { "pt-BR" })
+        .AddSupportedUICultures(new[] { "pt-BR" }));
 
     app.UseAuthorization();
 
