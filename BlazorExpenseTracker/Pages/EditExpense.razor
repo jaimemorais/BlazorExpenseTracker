@@ -23,8 +23,11 @@
                 <MudCardHeader style="font-size:25px;">Edit Expense</MudCardHeader>
 
                 <MudCardContent>
-                    <MudDatePicker Label="Date" @bind-Date="_editDate" @bind-Value="expenseEdit.Date" />
-                    <MudNumericField Label="Value" Class="mt-3" Format="N2" Culture="@_ptBR" @bind-Value="expenseEdit.Value" />
+                    <MudDatePicker Label="Date" @bind-Date="_editDate" @bind-Value="expenseEdit.Date" />                    
+
+                    <MudNumericField T="decimal?" InputMode="@(InputMode.@decimal)" Label="Value" Class="mt-3" Culture="@_ptBR" @bind-Value="expenseEdit.Value"
+                                     AutoFocus="true" Pattern="[0-9,.]" Format="N2" />
+
                     <MudSelect T="string" Label="Category" Class="mt-3" @bind-Value="expenseEdit.Category">
                         @if (categoryList != null)
                         {
