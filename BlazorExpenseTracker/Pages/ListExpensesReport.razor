@@ -41,10 +41,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        userGivenName = authState.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")?.Value;
-
-        expenses = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));
-        expenses = expenses.OrderBy(e => e.Date).ToList();
+        if (authState != null)
+        {
+            var claims = authState.User.Claims;
+            userGivenName = claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")?.Value;
+            expenses = await _expensesDataService.GetExpenseListAsync(authState.User.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));
+            expenses = expenses.OrderBy(e => e.Date).ToList();    
+        }        
     }
 
 }

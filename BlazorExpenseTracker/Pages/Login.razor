@@ -12,39 +12,28 @@
 
 <PageTitle>Expense Tracker - Login</PageTitle>
 
-<h1>Login</h1>
-<hr/>
+<MudGrid>
+    <MudItem xs="12" sm="5">
+        <MudCard>
 
-<div>
-   
-     <p>
-        <label>
-            Username:<br />
-            <input @bind="username" />
-        </label>
-    </p>
-    <p>
-        <label>
-            Password:<br/>
-            <input @bind="password" type="password" @onkeydown="@CheckEnterPressed" />
-        </label>
-    </p>
+            <MudCardHeader style="font-size:25px;">Login</MudCardHeader>
 
-    <button @onclick="ExecuteLogin">Login</button>
+            <MudCardContent>
+                <MudTextField Label="Username" Class="mt-3" @bind-Value="username" />
+                <MudTextField Label="Password" Class="mt-3" @bind-Value="password" />
+            </MudCardContent>
 
-</div>
+            <MudCardActions>                    
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="ExecuteLogin">Login</MudButton>
+            </MudCardActions>
+
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
 @code {
     string username = "";
     string password = "";
-
-    public async Task CheckEnterPressed(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            await ExecuteLogin();
-        }
-    }
 
     private async Task ExecuteLogin()
     {

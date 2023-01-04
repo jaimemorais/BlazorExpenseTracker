@@ -6,20 +6,25 @@
 <PageTitle>Home</PageTitle>
 
 
-<h2 style="padding-left:5px;color:#b22222">Hello <span style="font-weight:bold">@givenName</span> !</h2>
+<MudGrid>
+    <MudItem xs="12" sm="5">
+        <MudCard>
 
-<br />
+            <MudCardContent style="text-align:center;">
+                <h2 style="padding-left:5px;color:#2196f3">Hello <span style="font-weight:bold">@givenName</span> !</h2>
+                <br /><br />
+                <img src="puppy.gif" width="180" />   
+                <br /><br />
+                <br /><br />
+                <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Link="/addExpense">+ Add New Expense</MudButton>                
+                <br /><br />
+                <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Link="/listExpenses">View Expenses</MudButton>
+            </MudCardContent>
 
-<img src="puppy.gif" />
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-<br/><br/><hr/>
-
-<NavLink class="nav-link" href="addExpense" Match="NavLinkMatch.All">
-    <span class="oi oi-plus" aria-hidden="true"></span> Add New Expense
-</NavLink>
-<NavLink class="nav-link" href="listExpenses" Match="NavLinkMatch.All">
-    <span class="oi oi-list" aria-hidden="true"></span> View Expenses
-</NavLink>
 
 
 

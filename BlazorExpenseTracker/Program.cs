@@ -3,8 +3,7 @@ using BlazorExpenseTracker.Services.Data;
 using BlazorExpenseTracker.Services.Data.MongoDb;
 using BlazorExpenseTracker.Services.Data.MongoDb.Settings;
 using Microsoft.AspNetCore.Components.Authorization;
-
-
+using MudBlazor.Services;
 
 var app = BuildApp(args);
 ConfigureApp(app);
@@ -23,6 +22,7 @@ static WebApplication BuildApp(string[] args)
 
     builder.Services.AddMemoryCache();
     builder.Services.AddLocalization();
+    builder.Services.AddMudServices();
 
 
     // Auth services

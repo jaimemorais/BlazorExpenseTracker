@@ -4,6 +4,7 @@
 
 @using BlazorExpenseTracker.Model
 @using BlazorExpenseTracker.Services.Data;
+@using System.Globalization;
 @inject NavigationManager _navigationManager
 @inject ICategoryDataService _categoryDataService;
 @inject IPaymentTypeDataService _paymentTypeDataService;
@@ -12,68 +13,48 @@
 
 <PageTitle>Expense Tracker - Edit</PageTitle>
 
-<h1>Edit Expense</h1>
-<hr/>
-
 
 <EditForm Model="@expenseEdit" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
-    
-     <p>
-        <label>
-            Date:<br />
-            <InputDate @bind-Value="expenseEdit.Date" />
-        </label>
-    </p>
-    <p>
-        <label>
-            Value:<br/>
-            <InputNumber @bind-Value="expenseEdit.Value" />
-        </label>
-    </p>
-    <p>
-        <label>
-            Category:<br/>
-            <InputSelect @bind-Value="expenseEdit.Category">
-                <option value="">Select category ...</option>
-                @if (categoryList != null) {
-                    foreach(var category in categoryList)
-                    {
-                        <option value="@category.Name">@category.Name</option>
-                    }   
-                }             
-            </InputSelect>
-        </label>
-    </p>
-    <p>
-        <label>
-            Payment Type:<br/>
-            <InputSelect @bind-Value="expenseEdit.PaymentType">
-                <option value="">Select payment type ...</option>
-                @if (paymentTypeList != null)
-                {
-                    foreach (var paymentType in paymentTypeList)
-                    {
-                        <option value="@paymentType.Name">@paymentType.Name</option>
-                    }
-                }
-            </InputSelect>
-        </label>
-    </p>
 
-    <p>
-        <label>
-            Description:<br />
-            <InputTextArea @bind-Value="expenseEdit.Description" style="width:250px" />
-        </label>
-    </p>
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardHeader style="font-size:25px;">Edit Expense</MudCardHeader>
 
+                <MudCardContent>
+                    <MudDatePicker Label="Date" @bind-Date="_editDate" @bind-Value="expenseEdit.Date" />
+                    <MudNumericField Label="Value" Class="mt-3" Format="N2" Culture="@_ptBR" @bind-Value="expenseEdit.Value" />
+                    <MudSelect T="string" Label="Category" Class="mt-3" @bind-Value="expenseEdit.Category">
+                        @if (categoryList != null)
+                        {
+                            foreach (var category in categoryList)
+                            {
+                                <MudSelectItem Value="@category.Name">@category.Name</MudSelectItem>
+                            }
+                        }
+                    </MudSelect>
+                    <MudSelect T="string" Label="Payment Type" Class="mt-3" @bind-Value="expenseEdit.PaymentType">
+                        @if (paymentTypeList != null)
+                        {
+                            foreach (var paymentType in paymentTypeList)
+                            {
+                                <MudSelectItem Value="@paymentType.Name">@paymentType.Name</MudSelectItem>
+                            }
+                        }
+                    </MudSelect>
+                    <MudTextField Label="Description" Class="mt-3" @bind-Value="expenseEdit.Description" />
+                </MudCardContent>
 
-    <br/>
-    <ValidationSummary/>
+                <MudCardActions>
+                    <ValidationSummary />
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+                </MudCardActions>
 
-    <button type="submit">Save</button>
+            </MudCard>
+        </MudItem>
 
+    </MudGrid>
 
 </EditForm>
 
@@ -84,21 +65,24 @@
     [Parameter]
     public string ExpenseId { get; set; } = string.Empty;
 
+    private CultureInfo _ptBR = CultureInfo.GetCultureInfo("pt-BR");
     private Expense expenseEdit = new Expense();
+    private DateTime? _editDate = DateTime.Today;
     private IList<Category>? categoryList;
     private IList<PaymentType>? paymentTypeList;
 
     protected override async Task OnInitializedAsync()
     {
         expenseEdit = await _expenseDataService.GetExpenseAsync(ExpenseId);
+        _editDate = expenseEdit?.Date;
         categoryList = await _categoryDataService.GetCategoriesAsync();
         paymentTypeList = await _paymentTypeDataService.GetPaymentTypesAsync();
     }
 
     private async Task HandleValidSubmit()
-    {   
+    {
+        expenseEdit.Date = _editDate.Value;
         await _expenseDataService.UpdateExpenseAsync(expenseEdit);
-
         _navigationManager.NavigateTo("/listExpenses");
     }
 }

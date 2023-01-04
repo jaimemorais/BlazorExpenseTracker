@@ -1,15 +1,57 @@
 ﻿@inherits LayoutComponentBase
 
+<MudThemeProvider Theme="@ExpTrackerTheme" />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
 <PageTitle>Expense Tracker</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
-        <article class="content px-4">
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Expense Tracker</MudText>
+        <MudSpacer />        
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu/>
+    </MudDrawer>
+    <MudMainContent>        
+        <br/>
+        <MudContainer MaxWidth="MaxWidth.Medium" >
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    
+    MudTheme ExpTrackerTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Primary = Colors.Blue.Default,
+            Secondary = Colors.Green.Accent4,
+            AppbarBackground = Colors.Blue.Default            
+        },
+
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1
+        },
+
+        LayoutProperties = new LayoutProperties()
+        {
+            DrawerWidthLeft = "260px",
+            DrawerWidthRight = "300px"
+        }
+    };
+}

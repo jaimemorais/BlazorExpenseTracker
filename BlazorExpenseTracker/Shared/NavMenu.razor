@@ -3,56 +3,24 @@
 @inject NavigationManager _navigationManager
 
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Expense Tracker</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+<AuthorizeView>
+    <Authorized>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="addExpense">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Add Expense
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="listExpenses">
-                        <span class="oi oi-list" aria-hidden="true"></span> View Expenses
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="listExpensesReport">
-                        <span class="oi oi-spreadsheet" aria-hidden="true"></span> Report
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">        
-                        <a style="text-decoration:none"  @onclick="Logout" href="javascript:void(0)">Logout</a>
-                </div>
-            </Authorized>
-        </AuthorizeView>
-    </nav>
-</div>
+        <MudNavMenu>
+            <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+            <MudNavLink Href="/addExpense">Add Expense</MudNavLink>    
+            <MudNavLink Href="/listExpenses">View Expenses</MudNavLink>
+            <MudNavLink Href="/listExpensesReport">Report</MudNavLink>
+            <MudButton OnClick="Logout" style="padding-left:25px;">Logout</MudButton>        
+        </MudNavMenu>
+
+    </Authorized>
+</AuthorizeView>
+
+
+
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
 
     private async Task Logout()
     {
@@ -60,5 +28,4 @@
         await expTrackerAuthStateProvider.UpdateAuthenticationState(null);
         _navigationManager.NavigateTo("/", true);
     }
-
 }
