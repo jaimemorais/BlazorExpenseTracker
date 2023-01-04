@@ -6,7 +6,7 @@
 <PageTitle>Home</PageTitle>
 
 
-<MudGrid>
+<MudGrid hidden="@(!loggedIn)">
     <MudItem xs="12" sm="5">
         <MudCard>
 
@@ -30,6 +30,7 @@
 
 
 @code {
+    private bool loggedIn = false;
     private string? givenName;
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
@@ -42,6 +43,7 @@
         {
             givenName = user.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")?.Value;
             claims = user.Claims;
+            loggedIn = true;
         }
         else
         {
