@@ -54,6 +54,12 @@ else
 
     private IList<Expense>? expenses;
 
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        puppyGifHidden = true;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,25 +69,23 @@ else
             await Task.Delay(2000);     
         }
 
+        await LoadExpensesAsync();
+    }
+
+    private async Task LoadExpensesAsync()
+    {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var data = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));
         expenses = data.OrderByDescending(d => d.Date).ToList();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        puppyGifHidden = true;
-    }
 
     private async Task DeleteItem(string? expenseId) 
     {
         if (expenseId != null)
         {
             await _expensesDataService.DeleteExpenseAsync(expenseId);
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            expenses = await _expensesDataService.GetExpenseListAsync(authState.User?.Identity?.Name, DateOnly.FromDateTime(DateTime.Now.AddDays(-5)));                    
+            await LoadExpensesAsync();
         }
     }
 
