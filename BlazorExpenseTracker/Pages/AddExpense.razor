@@ -1,14 +1,23 @@
 ﻿@page "/addExpense"
 @attribute [Authorize]
 
+
 @using BlazorExpenseTracker.Model
 @using BlazorExpenseTracker.Services.Data;
 @using System.Globalization;
+@using Toolbelt.Blazor.SpeechRecognition 
+
 @inject NavigationManager _navigationManager
 @inject ICategoryDataService _categoryDataService;
 @inject IPaymentTypeDataService _paymentTypeDataService;
 @inject IExpenseDataService _expenseDataService;
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject SpeechRecognition _speechRecognition
+@inject IJSRuntime js
+
+@implements IDisposable
+
+
 
 <PageTitle>Expense Tracker - Add</PageTitle>
 
@@ -46,6 +55,8 @@
                 </MudCardContent>
 
                 <MudCardActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.Mic" ButtonType="ButtonType.Button" Variant="Variant.Outlined" OnClick="StartSpeech" IconColor="Color.Primary" IconClass="Mic" Color="Color.Primary" />
+
                     <ValidationSummary />
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
                 </MudCardActions>
@@ -87,4 +98,55 @@
 
         _navigationManager.NavigateTo("/listExpenses/expenseSavedFlagValue");
     }
+
+
+    // Speech
+
+    async Task StartSpeech()
+    {
+        _speechRecognition.Lang = "pt-BR";        
+        await _speechRecognition.StartAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        _speechRecognition.Result += OnSpeechRecognized;
+    }
+
+    void OnSpeechRecognized(object? sender, SpeechRecognitionEventArgs args)
+    {
+        try
+        {
+            SpeechRecognitionResult? result = args?.Results?[0];
+            if (result != null)
+            {
+                var text = result.Items?[0].Transcript;
+
+                if (text !=null)
+                {
+                    var items = text.Split(" ");
+                    newExpense.Value = items?.Length > 0 ? decimal.Parse(items[0]) : newExpense.Value;
+                    newExpense.Category = items?.Length > 1 ? FirstCharToUpper(items?[1]) : newExpense.Category;
+                    newExpense.PaymentType = items?.Length > 2 ? FirstCharToUpper(items?[2]) : newExpense.PaymentType;
+                    newExpense.Description = items?.Length > 3 ? FirstCharToUpper(items?[3]) : newExpense.Description;
+                }
+            }                        
+        }
+        catch (Exception ex)
+        {
+            js.InvokeVoidAsync("alert", "Error on speech recognization : " + ex.Message).GetAwaiter().GetResult();
+        }
+
+        StateHasChanged();
+    }
+
+    private static string FirstCharToUpper(string? input) => string.IsNullOrWhiteSpace(input) ? string.Empty : (input.First().ToString().ToUpper() + String.Join("", input.Skip(1)));
+        
+
+    public void Dispose()
+    {
+        _speechRecognition.Result -= OnSpeechRecognized;
+    }
+
 }
+
